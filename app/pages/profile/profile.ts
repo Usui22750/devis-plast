@@ -24,7 +24,7 @@ export class ProfilePage {
     		firstName: ['', Validators.required],
     		lastName: ['', Validators.required],
 		  	email: ['', Validators.required],
-		 	password: ['', , Validators.compose([Validators.minLength(7), Validators.required])]
+		 	password: ['', Validators.compose([Validators.minLength(7), Validators.required])]
 		})
   	}
 
