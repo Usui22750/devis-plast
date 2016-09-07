@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-navbar>
+  	<button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Profile</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="profile">
+
+ 	<form [formGroup]="profileForm" (submit)="updateProfile()" novalidate>
+ 
+  	<ion-item>
+      <ion-label stacked>First Name</ion-label>
+      <ion-input formControlName="firstName" type="string"  placeholder={{userProfile?.firstName}} ></ion-input>
+    </ion-item>
+     <ion-item>
+      <ion-label stacked>Last Name</ion-label>
+      <ion-input formControlName="lastName" type="string"  placeholder={{userProfile?.lastName}}></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label stacked>Email</ion-label>
+      <ion-input formControlName="email" type="email" value={{userProfile?.email}}></ion-input>
+    </ion-item>
+ 
+    <ion-item>
+      <ion-label stacked>Password</ion-label>
+      <ion-input formControlName="password" type="password"  placeholder="New password"></ion-input>
+    </ion-item>
+ 
+    <button block type="submit">
+      Update
+    </button>
+ 
+  </form>
+
+</ion-content>

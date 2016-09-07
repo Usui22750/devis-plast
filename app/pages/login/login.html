@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar primary>
+    <ion-title>
+      Devis Plast
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content padding class="login">
+ 
+  <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
+ 
+    <ion-item>
+      <ion-label stacked>Email</ion-label>
+      <ion-input formControlName="email" type="email" placeholder="Your email address"></ion-input>
+    </ion-item>
+ 
+    <ion-item>
+      <ion-label stacked>Password</ion-label>
+      <ion-input formControlName="password" type="password"  placeholder="Your password"></ion-input>
+    </ion-item>
+ 
+    <button block type="submit">
+      Login
+    </button>
+ 
+  </form>
+ 
+    <button block clear (click)="goToSignup()">
+      Create a new account
+    </button>
+ 
+    <button block clear (click)="goToResetPassword()">
+      I forgot my password
+    </button>
+ 
+</ion-content>
