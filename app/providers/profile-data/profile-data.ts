@@ -28,21 +28,17 @@ export class ProfileData {
   }
 
   updateProfile(firstName: string, lastName: string, newEmail: string): any {
+    this.currentUser.updateEmail(newEmail).then(() => {
+      this.userProfile.child(this.currentUser.uid).update({
+        email: newEmail
+      });
+    }, (error) => {
+      console.log(error);
+    })
     return this.userProfile.child(this.currentUser.uid).update({
       firstName: firstName,
       lastName: lastName,
     });
   }
 
-  /**
-  * Just like before this is changing the user's password, but remember, this has nothing to do with the database
-  * this is the AUTH portion of Firebase.
-  */
-  updatePassword(newPassword: string): any {
-    this.currentUser.updatePassword(newPassword).then(() => {
-      console.log("Password Changed");
-    }, (error) => {
-      console.log(error);
-    });
-  }
 }

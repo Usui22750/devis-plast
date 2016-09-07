@@ -328,15 +328,50 @@ var ProfilePage = (function () {
         this.formBuilder = formBuilder;
         this.authData = authData;
         this.alertCtrl = alertCtrl;
-        this.profileData.getUserProfile().on('value', function (data) { _this.userProfile = data.val(); });
+        this.profileData.getUserProfile().on('value', function (data) {
+            _this.userProfile = data.val();
+            console.log(_this.userProfile);
+            _this.profileForm.controls['firstName'].updateValue(_this.userProfile.firstName !== undefined ? _this.userProfile.firstName : '');
+            _this.profileForm.controls['lastName'].updateValue(_this.userProfile.lastName !== undefined ? _this.userProfile.lastName : '');
+            _this.profileForm.controls['email'].updateValue(_this.userProfile.email !== undefined ? _this.userProfile.email : '');
+        });
         this.profileForm = formBuilder.group({
             firstName: ['', common_1.Validators.required],
             lastName: ['', common_1.Validators.required],
-            email: ['', common_1.Validators.required],
-            password: ['', , common_1.Validators.compose([common_1.Validators.minLength(7), common_1.Validators.required])]
+            email: ['', common_1.Validators.required]
         });
     }
     ProfilePage.prototype.updateProfile = function () {
+        var _this = this;
+        if (!this.profileForm.valid) {
+            console.log(this.profileForm.value);
+        }
+        else {
+            this.profileData.updateProfile(this.profileForm.value.firstName, this.profileForm.value.lastName, this.profileForm.value.email).then(function () {
+                var alert = _this.alertCtrl.create({
+                    message: "Profile has been updated",
+                    buttons: [
+                        {
+                            text: "Ok",
+                            role: 'cancel'
+                        }
+                    ]
+                });
+                alert.present();
+            }, function (error) {
+                var errorMessage = error.message;
+                var alert = _this.alertCtrl.create({
+                    message: errorMessage,
+                    buttons: [
+                        {
+                            text: "Ok",
+                            role: 'cancel'
+                        }
+                    ]
+                });
+                alert.present();
+            });
+        }
     };
     ProfilePage = __decorate([
         core_1.Component({
@@ -590,20 +625,17 @@ var ProfileData = (function () {
         return this.userProfile.child(this.currentUser.uid);
     };
     ProfileData.prototype.updateProfile = function (firstName, lastName, newEmail) {
+        var _this = this;
+        this.currentUser.updateEmail(newEmail).then(function () {
+            _this.userProfile.child(_this.currentUser.uid).update({
+                email: newEmail
+            });
+        }, function (error) {
+            console.log(error);
+        });
         return this.userProfile.child(this.currentUser.uid).update({
             firstName: firstName,
             lastName: lastName,
-        });
-    };
-    /**
-    * Just like before this is changing the user's password, but remember, this has nothing to do with the database
-    * this is the AUTH portion of Firebase.
-    */
-    ProfileData.prototype.updatePassword = function (newPassword) {
-        this.currentUser.updatePassword(newPassword).then(function () {
-            console.log("Password Changed");
-        }, function (error) {
-            console.log(error);
         });
     };
     ProfileData = __decorate([
